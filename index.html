@@ -814,14 +814,15 @@ body::before{content:"";position:fixed;inset:-20%;pointer-events:none;z-index:-1
       <div><label for="f-plan">Тариф</label>
         <select id="f-plan" name="plan"><option>Пока не знаю, хочу бесплатные уроки</option><option>Старт</option><option>Самостоятельный</option><option>Групповой</option><option>Личный</option></select></div>
       <button class="btn btn-main" type="submit">Отправить заявку</button>
-      <div class="ok-msg" id="okMsg" role="status">Это черновик: заявки пока никуда не отправляются. Пока напишите в Telegram @gulya_wb.</div>
+      <div class="ok-msg" id="okMsg" role="status">Текст заявки скопирован. Сейчас откроется Telegram: вставьте его в чат с @gulya_wb и отправьте.</div>
+      <p class="small" style="margin:6px 0 0;color:#6b6790;font-size:12px">Отправляя заявку, вы соглашаетесь с <a href="privacy.html" style="color:inherit">политикой конфиденциальности</a>.</p>
     </form>
   </div>
 </div></section>
 
 <footer><div class="wrap">
   <span>© 2026 «Мой ИИ-штат»</span>
-  <span>ИП Мустафаева Гульнара</span>
+  <span>ИП Мустафаева Г. М. · ИНН 861204677201 · ОГРНИП 323861700037831 · <a href="oferta.html" style="color:inherit">Оферта</a> · <a href="privacy.html" style="color:inherit">Политика конфиденциальности</a></span>
 </div></footer>
 
 <script>
@@ -831,7 +832,7 @@ body::before{content:"";position:fixed;inset:-20%;pointer-events:none;z-index:-1
     a.addEventListener('click',function(){var s=document.getElementById('f-plan');for(var i=0;i<s.options.length;i++){if(s.options[i].text===a.dataset.plan)s.selectedIndex=i;}});
   });
   document.getElementById('leadForm').addEventListener('submit',function(e){
-    e.preventDefault();document.getElementById('okMsg').style.display='block';
+    e.preventDefault();var f=e.target;var t='Здравствуйте! Заявка на курс «Мой ИИ-штат». Имя: '+f.name.value+'. Контакт: '+f.contact.value+'. Тариф: '+f.plan.value+'.';try{navigator.clipboard.writeText(t)}catch(x){}document.getElementById('okMsg').style.display='block';setTimeout(function(){window.open('https://t.me/gulya_wb','_blank')},900);
   });
   // live log: cycle the last task, flash rows in turn
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
