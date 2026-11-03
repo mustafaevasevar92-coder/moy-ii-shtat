@@ -59,7 +59,7 @@ module.exports = async (req, res) => {
     const data = await r.json();
     if (!r.ok || !data.confirmation) {
       console.error('yookassa error', r.status, data && data.code, data && data.description);
-      res.status(502).json({ error: 'gateway' });
+      res.status(502).json({ error: 'gateway', status: r.status, code: data && data.code, parameter: data && data.parameter });
       return;
     }
     res.status(200).json({ url: data.confirmation.confirmation_url });
