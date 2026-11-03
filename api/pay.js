@@ -32,7 +32,7 @@ module.exports = async (req, res) => {
     description: `Курс «Мой ИИ-штат», тариф «${plan.name}»`,
     metadata: { plan: plan.name, email, tg },
   };
-  if (process.env.YK_RECEIPT === '1') {
+  if (process.env.YK_RECEIPT !== '0') {
     payload.receipt = {
       customer: { email },
       items: [{
