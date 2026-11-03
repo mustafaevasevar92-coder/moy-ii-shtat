@@ -471,7 +471,7 @@ chz3:async a=>{const li=[...a.body.closest('.slide').querySelectorAll('.chzl li'
 show((parseInt(location.hash.slice(1))||1)-1);
 const cam=document.getElementById('cam'),hole=document.getElementById('hole');
 function putVideo(v){hole.innerHTML='';hole.appendChild(v)}
-async function camera(){try{const s=await navigator.mediaDevices.getUserMedia({video:{width:1280,height:720},audio:false});
+async function camera(){try{const s=await navigator.mediaDevices.getUserMedia({video:{width:{ideal:1920},height:{ideal:1080},frameRate:{ideal:30}},audio:false});
  const v=document.createElement('video');v.autoplay=true;v.muted=true;v.playsInline=true;v.srcObject=s;cam.classList.add('mirror');putVideo(v)}
  catch(e){hole.textContent='Камера недоступна: разрешите доступ в браузере'}}
 document.getElementById('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const v=document.createElement('video');
