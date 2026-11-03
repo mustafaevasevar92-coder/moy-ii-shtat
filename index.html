@@ -936,5 +936,69 @@ function w(n){var a=n%10,b=n%100;return (a===1&&b!==11)?'день':(a>=2&&a<=4&&
 el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
 </script>
 <script>document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a,button');if(!a||!window.ym)return;var t=(a.textContent||'').trim();if(a.dataset&&a.dataset.plan)ym(114010783,'reachGoal','choose_plan',{plan:a.dataset.plan});else if(/бесплатно/i.test(t))ym(114010783,'reachGoal','free_lessons');});document.getElementById('leadForm').addEventListener('submit',function(){window.ym&&ym(114010783,'reachGoal','lead_form')});</script>
+
+<dialog id="payDlg" class="pay-dlg" aria-labelledby="payTitle">
+  <form id="payForm" novalidate>
+    <button type="button" class="pay-x" id="payClose" aria-label="Закрыть">×</button>
+    <h3 id="payTitle">Тариф «<span id="payPlan"></span>»</h3>
+    <p class="pay-sum"><span id="paySum"></span> ₽</p>
+    <label for="p-email">Почта для чека и доступа</label>
+    <input id="p-email" type="email" autocomplete="email" required placeholder="you@mail.ru">
+    <label for="p-tg">Ваш Telegram</label>
+    <input id="p-tg" autocomplete="off" placeholder="@username">
+    <label class="pay-ok"><input type="checkbox" id="p-agree" required> Принимаю условия <a href="oferta.html" target="_blank">оферты</a> и <a href="privacy.html" target="_blank">политики конфиденциальности</a></label>
+    <button class="btn btn-main" type="submit" id="payBtn">Перейти к оплате</button>
+    <p class="pay-err" id="payErr" role="alert"></p>
+    <p class="pay-note">Оплата картой или через СБП на защищённой странице ЮKassa.</p>
+  </form>
+</dialog>
+<style>
+.pay-dlg{border:0;border-radius:20px;padding:0;max-width:420px;width:calc(100% - 32px);background:var(--card);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.pay-dlg::backdrop{background:rgba(5,6,20,.7);backdrop-filter:blur(4px)}
+.pay-dlg form{padding:28px 24px 22px;display:grid;gap:8px;position:relative}
+.pay-dlg h3{font-size:20px;padding-right:28px}
+.pay-sum{font:800 30px/1 var(--display);margin:4px 0 10px;color:var(--pink)}
+.pay-dlg label{font-size:14px;color:var(--muted)}
+.pay-dlg input[type=email],.pay-dlg input#p-tg{font:inherit;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--paper);color:var(--ink)}
+.pay-dlg .pay-ok{display:flex;gap:8px;align-items:flex-start;margin:6px 0 8px;font-size:13px}
+.pay-dlg .pay-ok a{color:var(--ink)}
+.pay-dlg .btn{justify-content:center}
+.pay-x{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--muted);font-size:28px;cursor:pointer;line-height:1}
+.pay-err{color:#ff8a8a;font-size:14px;margin:0;min-height:0}
+.pay-note{font-size:12px;color:var(--muted);margin:0}
+</style>
+<script>
+(function(){
+  var KEYS={'Старт':'start','Самостоятельный':'self','Групповой':'group','Личный':'personal'};
+  var dlg=document.getElementById('payDlg');if(!dlg||!dlg.showModal)return;
+  var cur=null;
+  document.querySelectorAll('[data-plan]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var card=a.closest('.plan');cur=a.dataset.plan;
+      document.getElementById('payPlan').textContent=cur;
+      document.getElementById('paySum').textContent=card?card.querySelector('.price').firstChild.textContent.trim():'';
+      document.getElementById('payErr').textContent='';
+      e.preventDefault();dlg.showModal();
+    });
+  });
+  document.getElementById('payClose').onclick=function(){dlg.close()};
+  dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
+  document.getElementById('payForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    var em=document.getElementById('p-email').value.trim(),tg=document.getElementById('p-tg').value.trim(),err=document.getElementById('payErr'),btn=document.getElementById('payBtn');
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent='Проверьте почту';return}
+    if(!document.getElementById('p-agree').checked){err.textContent='Отметьте согласие с офертой';return}
+    btn.disabled=true;btn.textContent='Открываю оплату…';err.textContent='';
+    fetch('/api/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan:KEYS[cur],email:em,tg:tg})})
+    .then(function(r){return r.json().then(function(d){return{s:r.status,d:d}})})
+    .then(function(x){
+      if(x.d&&x.d.url){location.href=x.d.url;return}
+      if(x.s===503){dlg.close();var s=document.getElementById('f-plan');for(var i=0;i<s.options.length;i++){if(s.options[i].text===cur)s.selectedIndex=i}location.hash='order';return}
+      throw 0;
+    }).catch(function(){err.innerHTML='Не получилось открыть оплату. Напишите нам в Telegram: <a href="https://t.me/gulya_wb" style="color:inherit">@gulya_wb</a>'})
+    .finally(function(){btn.disabled=false;btn.textContent='Перейти к оплате'});
+  });
+})();
+</script>
 </body>
 </html>
