@@ -814,7 +814,7 @@ ym(114010783,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",
     <div>
       <h2>Оставьте заявку, и мы подберём тариф</h2>
       <p>Напишем в Telegram, ответим на вопросы и пришлём доступ к трём бесплатным урокам.</p>
-      <p>Или напишите сразу в Telegram: <a href="https://t.me/gulya_wb" target="_blank" rel="noopener" style="color:#fff;font-weight:600">@gulya_wb</a>. Полезное про ИИ для селлеров в канале <a href="https://t.me/gul_wb72" target="_blank" rel="noopener" style="color:#fff;font-weight:600">t.me/gul_wb72</a>.</p>
+      <p>Или задайте вопрос в боте поддержки: <a href="https://t.me/ii_dlya_sellerov_wb_bot" target="_blank" rel="noopener" style="color:#fff;font-weight:600">@ii_dlya_sellerov_wb_bot</a>. Полезное про ИИ для селлеров в канале <a href="https://t.me/gul_wb72" target="_blank" rel="noopener" style="color:#fff;font-weight:600">t.me/gul_wb72</a>.</p>
     </div>
     <form class="lead-form" id="leadForm" novalidate>
       <div><label for="f-name">Как вас зовут</label><input id="f-name" name="name" autocomplete="given-name" required></div>
@@ -822,7 +822,7 @@ ym(114010783,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",
       <div><label for="f-plan">Тариф</label>
         <select id="f-plan" name="plan"><option>Пока не знаю, хочу бесплатные уроки</option><option>Старт</option><option>Самостоятельный</option><option>Групповой</option><option>Личный</option></select></div>
       <button class="btn btn-main" type="submit">Отправить заявку</button>
-      <div class="ok-msg" id="okMsg" role="status">Текст заявки скопирован. Сейчас откроется Telegram: вставьте его в чат с @gulya_wb и отправьте.</div>
+      <div class="ok-msg" id="okMsg" role="status">Текст заявки скопирован. Сейчас откроется Telegram: вставьте его в чат с ботом и отправьте.</div>
       <p class="small" style="margin:6px 0 0;color:#6b6790;font-size:12px">Отправляя заявку, вы соглашаетесь с <a href="privacy.html" style="color:inherit">политикой конфиденциальности</a>.</p>
     </form>
   </div>
@@ -840,7 +840,7 @@ ym(114010783,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",
     a.addEventListener('click',function(){var s=document.getElementById('f-plan');for(var i=0;i<s.options.length;i++){if(s.options[i].text===a.dataset.plan)s.selectedIndex=i;}});
   });
   document.getElementById('leadForm').addEventListener('submit',function(e){
-    e.preventDefault();var f=e.target;var t='Здравствуйте! Заявка на курс «Мой ИИ-штат». Имя: '+f.name.value+'. Контакт: '+f.contact.value+'. Тариф: '+f.plan.value+'.';try{navigator.clipboard.writeText(t)}catch(x){}document.getElementById('okMsg').style.display='block';setTimeout(function(){window.open('https://t.me/gulya_wb','_blank')},900);
+    e.preventDefault();var f=e.target;var t='Здравствуйте! Заявка на курс «Мой ИИ-штат». Имя: '+f.name.value+'. Контакт: '+f.contact.value+'. Тариф: '+f.plan.value+'.';try{navigator.clipboard.writeText(t)}catch(x){}document.getElementById('okMsg').style.display='block';setTimeout(function(){window.open('https://t.me/ii_dlya_sellerov_wb_bot','_blank')},900);
   });
   // live log: cycle the last task, flash rows in turn
   var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -995,7 +995,7 @@ el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
       if(x.d&&x.d.url){location.href=x.d.url;return}
       if(x.s===503){dlg.close();var s=document.getElementById('f-plan');for(var i=0;i<s.options.length;i++){if(s.options[i].text===cur)s.selectedIndex=i}location.hash='order';return}
       throw 0;
-    }).catch(function(){err.innerHTML='Не получилось открыть оплату. Напишите нам в Telegram: <a href="https://t.me/gulya_wb" style="color:inherit">@gulya_wb</a>'})
+    }).catch(function(){err.innerHTML='Не получилось открыть оплату. Напишите в бот поддержки: <a href="https://t.me/ii_dlya_sellerov_wb_bot" style="color:inherit">@ii_dlya_sellerov_wb_bot</a>'})
     .finally(function(){btn.disabled=false;btn.textContent='Перейти к оплате'});
   });
 })();
