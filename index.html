@@ -346,6 +346,7 @@ body::before{content:"";position:fixed;inset:-20%;pointer-events:none;z-index:-1
 .hero h1 em{background:linear-gradient(100deg,#ffcf3a,var(--orange) 25%,var(--magenta) 60%,#b58cff);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 24px rgba(255,43,214,.35))}
 .plan.hit{border-color:transparent;background:linear-gradient(var(--card),var(--card)) padding-box,linear-gradient(135deg,var(--orange),var(--magenta),var(--violet)) border-box;box-shadow:8px 8px 0 rgba(255,43,214,.6),0 0 40px rgba(255,138,0,.25)}
 .plan .badge{background:linear-gradient(135deg,var(--orange),var(--magenta))}
+.plan .badge-limited{background:linear-gradient(135deg,#00F0FF,#7A5CFF);color:#06082B}
 .final .box{background:linear-gradient(125deg,#ff7a00 0%,#ff2b8a 40%,#b0179a 65%,#5a1fd6 100%);overflow:visible}
 .final .box::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.18) 45%,transparent 50%),linear-gradient(115deg,transparent 62%,rgba(255,255,255,.12) 65%,transparent 68%)}
 .final .box>*{position:relative}
@@ -732,6 +733,7 @@ ym(114010783,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",
       <a class="btn btn-main" href="#order" data-plan="Самостоятельный">Выбрать</a>
     </div>
     <div class="plan">
+      <span class="badge badge-limited">ограниченное число мест</span>
       <h3>Личный</h3>
       <p class="who">Наставник один на один под ваш магазин.</p>
       <div class="p3"><span class="p-hi">89 900 ₽</span><span class="p-perm">69 900 ₽</span></div>
