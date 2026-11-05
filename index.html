@@ -162,7 +162,7 @@ details.mod[open] .chev{transform:rotate(45deg)}
 /* prices */
 .early{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;background:var(--marker);color:var(--dark);border:2px solid #000;border-radius:16px;padding:16px 20px;margin-bottom:28px;font-weight:500}
 .early b{font-family:var(--display)}
-.prices{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:stretch}
+.prices{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:stretch}
 @media (max-width:1060px){.prices{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.prices{grid-template-columns:1fr}}
 .plan{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 22px;display:flex;flex-direction:column;gap:16px;position:relative}
@@ -661,7 +661,7 @@ ym(114010783,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",
     <div class="diff-item"><i class="glow"></i><span class="n">01</span><div><h3>Честный знак и конкуренты в программе</h3><p>Темы, которые болят у селлера каждый день, а в общих курсах про ИИ их обычно нет.</p></div></div>
     <div class="diff-item"><i class="glow"></i><span class="n">02</span><div><h3>Сначала посмотреть бесплатно</h3><p>3 урока открыты сразу. Поймёте, как работают агенты, выпишете свою рутину, разложите её по карте пути и увидите, что можно отдать ИИ-штату. Потом решите, нужно ли вам дальше.</p></div></div>
     <div class="diff-item"><i class="glow"></i><span class="n">03</span><div><h3>Смотрите и повторяете</h3><p>Каждый урок записан на экране: что нажать и что написать. Можно пересматривать сколько нужно.</p></div></div>
-    <div class="diff-item"><i class="glow"></i><span class="n">04</span><div><h3>Живая поддержка на созвонах</h3><p>В групповом и личном тарифе разбираем ваши задачи по демонстрации экрана: вы показываете, наставник подсказывает.</p></div></div>
+    <div class="diff-item"><i class="glow"></i><span class="n">04</span><div><h3>Живая поддержка на созвонах</h3><p>В личном тарифе разбираем ваши задачи по демонстрации экрана: вы показываете, наставник подсказывает.</p></div></div>
     <div class="diff-item"><i class="glow"></i><span class="n">05</span><div><h3>Ведёт практикующий селлер</h3><p>Курс собран из того, что работает в реальном магазине. Автор продаёт на Wildberries с 2022 года и работает наставником в школе Марпла.</p></div></div>
     <div class="diff-item"><i class="glow"></i><span class="n">06</span><div><h3>Доступ на 6 месяцев</h3><p>Уроки можно пересматривать полгода, а агенты, которых вы соберёте, остаются у вас навсегда.</p></div></div>
   </div>
@@ -721,24 +721,15 @@ ym(114010783,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",
       <ul><li>Модули 0–2: установка Claude, первые задачи, инструкция агенту о вашем магазине</li><li>Готовые шаблоны запросов для селлера</li><li>Доступ на 6 месяцев</li><li>Общая группа участников</li><li class="no">Агенты под задачи WB</li><li class="no">Клуб участников</li><li class="no">Созвоны</li></ul>
       <a class="btn btn-ghost" href="#order" data-plan="Старт">Выбрать</a>
     </div>
-    <div class="plan">
+    <div class="plan hit">
+      <span class="badge">лучший выбор</span>
       <h3>Самостоятельный</h3>
       <p class="who">Пройти весь курс в своём темпе.</p>
       <div class="p3"><span class="p-hi">19 900 ₽</span><span class="p-perm">16 900 ₽</span></div>
       <div class="price">12 900 <small>₽</small></div>
       <span class="p-until">до 16 ноября</span>
       <ul><li>Все 44 урока и бонусный модуль</li><li>Доступ на 6 месяцев</li><li>Общая группа участников</li><li><b>🎁 Клуб на 6 месяцев в подарок</b></li><li>Все агенты из курса: Честный знак, отзывы, реклама, конкуренты, финансы</li><li>Директор-агент, который раздаёт задачи команде</li><li class="no">Созвоны с наставником</li></ul>
-      <a class="btn btn-ghost" href="#order" data-plan="Самостоятельный">Выбрать</a>
-    </div>
-    <div class="plan hit">
-      <span class="badge">лучший выбор</span>
-      <h3>Групповой</h3>
-      <p class="who">Курс плюс живые разборы в небольшой группе.</p>
-      <div class="p3"><span class="p-hi">29 900 ₽</span><span class="p-perm">24 900 ₽</span></div>
-      <div class="price">19 900 <small>₽ / чел.</small></div>
-      <span class="p-until">до 16 ноября</span>
-      <ul><li>Всё из самостоятельного</li><li>Групповой созвон раз в неделю по 1,5 часа, 6 недель</li><li>Отдельный чат вашего потока</li><li>Разбор ваших задач</li><li>Обратная связь по домашним заданиям</li></ul>
-      <a class="btn btn-main" href="#order" data-plan="Групповой">Выбрать</a>
+      <a class="btn btn-main" href="#order" data-plan="Самостоятельный">Выбрать</a>
     </div>
     <div class="plan">
       <h3>Личный</h3>
@@ -746,7 +737,7 @@ ym(114010783,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",
       <div class="p3"><span class="p-hi">89 900 ₽</span><span class="p-perm">69 900 ₽</span></div>
       <div class="price">49 900 <small>₽</small></div>
       <span class="p-until">до 16 ноября</span>
-            <ul><li>Всё из группового</li><li>6 личных созвонов по 60 минут, раз в неделю, по демонстрации экрана</li><li>Чат с наставником по будням, ответ в течение суток</li><li>Агент под вашу задачу</li></ul>
+            <ul><li>Всё из самостоятельного</li><li>6 личных созвонов по 60 минут, раз в неделю, по демонстрации экрана</li><li>Чат с наставником по будням, ответ в течение суток</li><li>Агент под вашу задачу</li></ul>
       <a class="btn btn-ghost" href="#order" data-plan="Личный">Выбрать</a>
     </div>
   </div>
@@ -820,7 +811,7 @@ ym(114010783,'init',{ssr:true,webvisor:true,clickmap:true,ecommerce:"dataLayer",
       <div><label for="f-name">Как вас зовут</label><input id="f-name" name="name" autocomplete="given-name" required></div>
       <div><label for="f-tg">Telegram или телефон</label><input id="f-tg" name="contact" placeholder="@username" required></div>
       <div><label for="f-plan">Тариф</label>
-        <select id="f-plan" name="plan"><option>Пока не знаю, хочу бесплатные уроки</option><option>Старт</option><option>Самостоятельный</option><option>Групповой</option><option>Личный</option></select></div>
+        <select id="f-plan" name="plan"><option>Пока не знаю, хочу бесплатные уроки</option><option>Старт</option><option>Самостоятельный</option><option>Личный</option></select></div>
       <button class="btn btn-main" type="submit">Отправить заявку</button>
       <div class="ok-msg" id="okMsg" role="status">Текст заявки скопирован. Сейчас откроется Telegram: вставьте его в чат с ботом и отправьте.</div>
       <p class="small" style="margin:6px 0 0;color:#6b6790;font-size:12px">Отправляя заявку, вы соглашаетесь с <a href="privacy.html" style="color:inherit">политикой конфиденциальности</a>.</p>
@@ -969,7 +960,7 @@ el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
 </style>
 <script>
 (function(){
-  var KEYS={'Старт':'start','Самостоятельный':'self','Групповой':'group','Личный':'personal'};
+  var KEYS={'Старт':'start','Самостоятельный':'self','Личный':'personal'};
   var dlg=document.getElementById('payDlg');if(!dlg||!dlg.showModal)return;
   var cur=null;
   document.querySelectorAll('[data-plan]').forEach(function(a){

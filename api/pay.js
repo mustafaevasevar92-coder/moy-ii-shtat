@@ -5,7 +5,6 @@ const crypto = require('crypto');
 const PLANS = {
   start: { name: 'Старт', price: '3990.00' },
   self:  { name: 'Самостоятельный', price: '12900.00' },
-  group: { name: 'Групповой', price: '19900.00' },
   personal: { name: 'Личный', price: '49900.00' },
 };
 
