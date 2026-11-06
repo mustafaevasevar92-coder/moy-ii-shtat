@@ -50,7 +50,7 @@ const D=[{"id": "01", "title": "Инструкция агенту о вашем 
 let cat='Все',lv='Все',q='',open_={},favs=[];
 try{favs=JSON.parse(localStorage.getItem('fav')||'[]')}catch(e){}
 const $=s=>document.querySelector(s);
-const ORDER=['Старт с ИИ','Честный знак','Карточки и SEO','Отзывы и вопросы','Реклама WB','Аналитика и финансы','Конкуренты','Контент и визуал','Склад и поставки','Документы и поставщики','Цены и акции','Автоматизация и агенты'];
+const ORDER=['Старт с ИИ','Честный знак','Карточки и SEO','Отзывы и вопросы','Реклама WB','Аналитика и финансы','Конкуренты','Контент и визуал','Склад и поставки','Документы и поставщики','Автоматизация и агенты'];
 const cats=[...ORDER.filter(c=>D.some(d=>d.cat==c)),...[...new Set(D.map(d=>d.cat))].filter(c=>!ORDER.includes(c))];
 function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
 function nav(el,items,get,set){el.innerHTML='';items.forEach(([k,label,n])=>{const b=document.createElement('button');b.setAttribute('aria-pressed',get()===k);b.innerHTML=`<span>${label}</span><small>${n}</small>`;b.onclick=()=>{set(k);render()};el.append(b)})}
