@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/biblioteka", "destination": "/api/lib" },
+    { "source": "/biblioteka/", "destination": "/api/lib" }
+  ],
+  "functions": {
+    "api/lib.js": { "includeFiles": "private/**" }
+  }
+}
