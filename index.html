@@ -940,10 +940,20 @@ el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
     <label for="p-tg">Ваш Telegram</label>
     <input id="p-tg" autocomplete="off" placeholder="@username">
     <label class="pay-ok"><input type="checkbox" id="p-agree" required><span>Принимаю условия <a href="oferta.html" target="_blank">оферты</a> и <a href="privacy.html" target="_blank">политики конфиденциальности</a></span></label>
-    <button class="btn btn-main" type="submit" id="payBtn">Перейти к оплате</button>
+    <button class="btn btn-main" type="button" id="payQrBtn">Оплатить по QR (СБП)</button>
+    <button class="btn btn-ghost" type="submit" id="payBtn">Оплатить картой</button>
     <p class="pay-err" id="payErr" role="alert"></p>
-    <p class="pay-note">Оплата картой или через СБП на защищённой странице ЮKassa.</p>
+    <p class="pay-note">Оплата на защищённой странице ЮKassa.</p>
   </form>
+  <div id="qrBox" class="qr-box" hidden>
+    <button type="button" class="pay-x" id="qrClose" aria-label="Закрыть">×</button>
+    <h3>Оплата по QR (СБП)</h3>
+    <p class="pay-sum"><span id="qrSum"></span> ₽</p>
+    <div id="qrImg" class="qr-img"></div>
+    <p class="pay-note" style="font-size:14px;color:var(--ink)">Отсканируйте камерой телефона или в приложении банка. На телефоне: сохраните QR скриншотом и выберите его из галереи в приложении банка.</p>
+    <a class="btn btn-ghost" id="qrOpen" href="#" rel="noopener">Открыть в приложении банка</a>
+    <p class="pay-note" id="qrStatus">Ждём оплату…</p>
+  </div>
 </dialog>
 <style>
 .pay-dlg{border:0;border-radius:20px;padding:0;max-width:420px;width:calc(100% - 32px);background:var(--card);color:var(--ink);box-shadow:0 20px 60px rgba(0,0,0,.6)}
@@ -959,7 +969,12 @@ el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
 .pay-x{position:absolute;top:10px;right:12px;background:none;border:0;color:var(--muted);font-size:28px;cursor:pointer;line-height:1}
 .pay-err{color:#ff8a8a;font-size:14px;margin:0;min-height:0}
 .pay-note{font-size:12px;color:var(--muted);margin:0}
+.qr-box{padding:28px 24px 22px;display:grid;gap:10px;position:relative;justify-items:center;text-align:center}
+.qr-box[hidden],.pay-dlg form[hidden]{display:none}
+.qr-img{background:#fff;padding:14px;border-radius:14px;line-height:0}
+.qr-img canvas,.qr-img img{width:220px;height:220px}
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 (function(){
   var KEYS={'Старт':'start','Самостоятельный':'self','Личный':'personal'};
@@ -975,6 +990,39 @@ el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
     });
   });
   document.getElementById('payClose').onclick=function(){dlg.close()};
+  // Оплата по QR (СБП): QR рисуем сами, статус проверяем раз в 3 секунды
+  var qrTimer=null;
+  function qrStop(){if(qrTimer){clearInterval(qrTimer);qrTimer=null}}
+  document.getElementById('qrClose').onclick=function(){qrStop();dlg.close()};
+  dlg.addEventListener('close',qrStop);
+  document.getElementById('payQrBtn').addEventListener('click',function(){
+    var em=document.getElementById('p-email').value.trim(),tg=document.getElementById('p-tg').value.trim(),err=document.getElementById('payErr'),btn=this;
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent='Проверьте почту';return}
+    if(!document.getElementById('p-agree').checked){err.textContent='Отметьте согласие с офертой';return}
+    btn.disabled=true;err.textContent='';
+    fetch('/api/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan:KEYS[cur],email:em,tg:tg,method:'sbp'})})
+    .then(function(r){return r.json().then(function(d){return{s:r.status,d:d}})})
+    .then(function(x){
+      if(!(x.d&&x.d.qr)){err.textContent='QR сейчас недоступен. Оплатите картой или напишите в бот поддержки.';return}
+      document.getElementById('payForm').hidden=true;
+      var box=document.getElementById('qrBox');box.hidden=false;
+      document.getElementById('qrSum').textContent=document.getElementById('paySum').textContent;
+      var img=document.getElementById('qrImg');img.innerHTML='';
+      try{new QRCode(img,{text:x.d.qr,width:220,height:220,correctLevel:QRCode.CorrectLevel.M})}catch(e){img.textContent='Не удалось построить QR'}
+      document.getElementById('qrOpen').href=x.d.qr;
+      var st=document.getElementById('qrStatus');st.textContent='Ждём оплату…';
+      qrStop();var n=0;
+      qrTimer=setInterval(function(){
+        n++;if(n>400){qrStop();st.textContent='Время вышло. Закройте окно и попробуйте снова.';return}
+        fetch('/api/pay-status?id='+encodeURIComponent(x.d.id)).then(function(r){return r.json()}).then(function(s){
+          if(s.status==='succeeded'){qrStop();st.textContent='Оплата получена! Открываю бота…';setTimeout(function(){location.href='https://t.me/ii_dlya_sellerov_wb_bot?start=paid'},1200)}
+          else if(s.status==='canceled'){qrStop();st.textContent='Платёж отменён. Закройте окно и попробуйте снова.'}
+        }).catch(function(){});
+      },3000);
+    }).catch(function(){err.textContent='Не получилось. Оплатите картой или напишите в бот поддержки.'})
+    .finally(function(){btn.disabled=false});
+  });
+
   // Прямые ссылки из бота: /#buy-start, /#buy-self, /#buy-personal открывают окно оплаты нужного тарифа
   var DEEP={'buy-start':'Старт','buy-self':'Самостоятельный','buy-personal':'Личный'};
   var want=DEEP[(location.hash||'').slice(1)];
@@ -993,7 +1041,7 @@ el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
       if(x.s===503){dlg.close();var s=document.getElementById('f-plan');for(var i=0;i<s.options.length;i++){if(s.options[i].text===cur)s.selectedIndex=i}location.hash='order';return}
       throw 0;
     }).catch(function(){err.innerHTML='Не получилось открыть оплату. Напишите в бот поддержки: <a href="https://t.me/ii_dlya_sellerov_wb_bot?start=site" style="color:inherit">@ii_dlya_sellerov_wb_bot</a>'})
-    .finally(function(){btn.disabled=false;btn.textContent='Перейти к оплате'});
+    .finally(function(){btn.disabled=false;btn.textContent='Оплатить картой'});
   });
 })();
 </script>

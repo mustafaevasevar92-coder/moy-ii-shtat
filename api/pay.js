@@ -20,6 +20,7 @@ module.exports = async (req, res) => {
   const plan = PLANS[body.plan];
   const email = String(body.email || '').trim().slice(0, 120);
   const tg = String(body.tg || '').trim().slice(0, 64);
+  const qr = body.method === 'sbp';
   if (!plan) { res.status(400).json({ error: 'plan' }); return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { res.status(400).json({ error: 'email' }); return; }
 
@@ -27,10 +28,13 @@ module.exports = async (req, res) => {
   const payload = {
     amount: { value: plan.price, currency: 'RUB' },
     capture: true,
-    confirmation: { type: 'redirect', return_url: 'https://t.me/ii_dlya_sellerov_wb_bot?start=paid' },
+    confirmation: qr
+      ? { type: 'qr', return_url: 'https://t.me/ii_dlya_sellerov_wb_bot?start=paid' }
+      : { type: 'redirect', return_url: 'https://t.me/ii_dlya_sellerov_wb_bot?start=paid' },
     description: `Курс «Мой ИИ-штат», тариф «${plan.name}»`,
     metadata: { plan: plan.name, email, tg },
   };
+  if (qr) payload.payment_method_data = { type: 'sbp' };
   if (process.env.YK_RECEIPT !== '0') {
     payload.receipt = {
       customer: { email },
@@ -59,6 +63,15 @@ module.exports = async (req, res) => {
     if (!r.ok || !data.confirmation) {
       console.error('yookassa error', r.status, data && data.code, data && data.description);
       res.status(502).json({ error: 'gateway', status: r.status, code: data && data.code, parameter: data && data.parameter });
+      return;
+    }
+    if (qr) {
+      if (data.confirmation.type !== 'qr' || !data.confirmation.confirmation_data) {
+        console.error('yookassa qr: no confirmation_data', JSON.stringify(data.confirmation));
+        res.status(502).json({ error: 'qr_unavailable' });
+        return;
+      }
+      res.status(200).json({ qr: data.confirmation.confirmation_data, id: data.id });
       return;
     }
     res.status(200).json({ url: data.confirmation.confirmation_url });
