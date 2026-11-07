@@ -27,7 +27,7 @@ module.exports = async (req, res) => {
   const payload = {
     amount: { value: plan.price, currency: 'RUB' },
     capture: true,
-    confirmation: { type: 'redirect', return_url: `https://${host}/spasibo.html` },
+    confirmation: { type: 'redirect', return_url: 'https://t.me/ii_dlya_sellerov_wb_bot?start=paid' },
     description: `Курс «Мой ИИ-штат», тариф «${plan.name}»`,
     metadata: { plan: plan.name, email, tg },
   };
