@@ -28,6 +28,7 @@ module.exports = async (req, res) => {
         plan: m.plan || '',
         email: m.email || '',
         tg: m.tg || '',
+        name: m.name || '',
         amount: pay.amount && pay.amount.value,
       }),
     });

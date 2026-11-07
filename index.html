@@ -935,6 +935,8 @@ el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
     <button type="button" class="pay-x" id="payClose" aria-label="Закрыть">×</button>
     <h3 id="payTitle">Тариф «<span id="payPlan"></span>»</h3>
     <p class="pay-sum"><span id="paySum"></span> ₽</p>
+    <label for="p-name">Как вас зовут</label>
+    <input id="p-name" autocomplete="given-name" placeholder="Имя">
     <label for="p-email">Почта для чека и доступа</label>
     <input id="p-email" type="email" autocomplete="email" required placeholder="you@mail.ru">
     <label for="p-tg">Ваш Telegram</label>
@@ -1000,7 +1002,7 @@ el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent='Проверьте почту';return}
     if(!document.getElementById('p-agree').checked){err.textContent='Отметьте согласие с офертой';return}
     btn.disabled=true;err.textContent='';
-    fetch('/api/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan:KEYS[cur],email:em,tg:tg,method:'sbp'})})
+    fetch('/api/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan:KEYS[cur],email:em,tg:tg,name:(document.getElementById('p-name').value||'').trim(),method:'sbp'})})
     .then(function(r){return r.json().then(function(d){return{s:r.status,d:d}})})
     .then(function(x){
       if(!(x.d&&x.d.qr)){err.textContent='QR сейчас недоступен. Оплатите картой или напишите в бот поддержки.';return}
@@ -1034,7 +1036,7 @@ el.textContent=d>1?'через '+d+' '+w(d):d===1?'уже завтра':'';})();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){err.textContent='Проверьте почту';return}
     if(!document.getElementById('p-agree').checked){err.textContent='Отметьте согласие с офертой';return}
     btn.disabled=true;btn.textContent='Открываю оплату…';err.textContent='';
-    fetch('/api/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan:KEYS[cur],email:em,tg:tg})})
+    fetch('/api/pay',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({plan:KEYS[cur],email:em,tg:tg,name:(document.getElementById('p-name').value||'').trim()})})
     .then(function(r){return r.json().then(function(d){return{s:r.status,d:d}})})
     .then(function(x){
       if(x.d&&x.d.url){location.href=x.d.url;return}

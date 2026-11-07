@@ -20,6 +20,7 @@ module.exports = async (req, res) => {
   const plan = PLANS[body.plan];
   const email = String(body.email || '').trim().slice(0, 120);
   const tg = String(body.tg || '').trim().slice(0, 64);
+  const name = String(body.name || '').trim().slice(0, 60);
   const qr = body.method === 'sbp';
   if (!plan) { res.status(400).json({ error: 'plan' }); return; }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { res.status(400).json({ error: 'email' }); return; }
@@ -32,7 +33,7 @@ module.exports = async (req, res) => {
       ? { type: 'qr', return_url: 'https://t.me/ii_dlya_sellerov_wb_bot?start=paid' }
       : { type: 'redirect', return_url: 'https://t.me/ii_dlya_sellerov_wb_bot?start=paid' },
     description: `Курс «Мой ИИ-штат», тариф «${plan.name}»`,
-    metadata: { plan: plan.name, email, tg },
+    metadata: { plan: plan.name, email, tg, name },
   };
   if (qr) payload.payment_method_data = { type: 'sbp' };
   if (process.env.YK_RECEIPT !== '0') {
