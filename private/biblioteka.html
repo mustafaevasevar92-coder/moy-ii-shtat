@@ -53,7 +53,7 @@ const $=s=>document.querySelector(s);
 const ORDER=['Старт с ИИ','Честный знак','Карточки и SEO','Отзывы и вопросы','Реклама WB','Аналитика и финансы','Конкуренты','Контент и визуал','Склад и поставки','Документы и поставщики','Автоматизация и агенты'];
 const cats=[...ORDER.filter(c=>D.some(d=>d.cat==c)),...[...new Set(D.map(d=>d.cat))].filter(c=>!ORDER.includes(c))];
 function esc(s){return s.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))}
-function nav(el,items,get,set){el.innerHTML='';items.forEach(([k,label,n])=>{const b=document.createElement('button');b.setAttribute('aria-pressed',get()===k);b.innerHTML=`<span>${label}</span><small>${n}</small>`;b.onclick=()=>{set(k);render()};el.append(b)})}
+function nav(el,items,get,set){const sl=el.scrollLeft;el.innerHTML='';items.forEach(([k,label,n])=>{const b=document.createElement('button');b.setAttribute('aria-pressed',get()===k);b.innerHTML=`<span>${label}</span><small>${n}</small>`;b.onclick=()=>{set(k);render();if(innerWidth<=760)$('#ttl').scrollIntoView({behavior:'smooth',block:'start'})};el.append(b)});el.scrollLeft=sl}
 function render(){
  const base=D.filter(d=>!q||(d.title+d.why+d.cat+d.blocks.join(' ')).toLowerCase().includes(q));
  const byLv=d=>lv=='Все'||d.level==lv, byCat=d=>cat=='Все'||(cat=='★'?d.start:cat=='♥'?favs.includes(d.id):d.cat==cat);
